@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function Landing() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -15,9 +17,9 @@ function Landing() {
             <a href="#how" className="text-gray-700 hover:text-primary transition-colors">
               Comment ça marche
             </a>
-            <a href="#login" className="text-primary font-semibold hover:underline">
+            <Link to="/login" className="text-primary font-semibold hover:underline">
               Connexion
-            </a>
+            </Link>
           </nav>
           {/* Mobile menu button */}
           <button className="md:hidden text-gray-700 text-2xl" aria-label="Menu">
@@ -38,9 +40,12 @@ function Landing() {
         <p className="mt-4 text-lg md:text-xl text-gray-700 max-w-2xl">
           Prenez soin de vos relations comme vous prenez soin de votre santé
         </p>
-        <button className="mt-8 bg-primary text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors shadow-md">
+        <Link
+          to="/signup"
+          className="mt-8 inline-block bg-primary text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors shadow-md"
+        >
           Commencer gratuitement
-        </button>
+        </Link>
       </section>
 
       {/* COMMENT ÇA MARCHE */}
