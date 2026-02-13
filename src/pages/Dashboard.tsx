@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { User } from '@supabase/supabase-js'
 
@@ -62,6 +62,20 @@ function Dashboard() {
           <p className="mt-2 text-sm text-gray-500">
             Connecté en tant que <strong>{user.email}</strong>
           </p>
+          <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
+            <Link
+              to="/contacts"
+              className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-md"
+            >
+              📋 Mes relations
+            </Link>
+            <Link
+              to="/add-contact"
+              className="bg-white text-primary border-2 border-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors"
+            >
+              ➕ Ajouter un contact
+            </Link>
+          </div>
         </div>
       </main>
     </div>
