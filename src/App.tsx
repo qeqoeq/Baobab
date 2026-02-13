@@ -5,6 +5,9 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import AddContact from './pages/AddContact'
 import Contacts from './pages/Contacts'
+import CheckIn from './pages/CheckIn'
+import CheckInSuccess from './pages/CheckInSuccess'
+import RelationshipPulse from './pages/RelationshipPulse'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -17,6 +20,9 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/add-contact" element={<ProtectedRoute><AddContact /></ProtectedRoute>} />
         <Route path="/contacts" element={<ProtectedRoute><Contacts /></ProtectedRoute>} />
+        <Route path="/checkin/:id" element={<ProtectedRoute><CheckIn /></ProtectedRoute>} />
+        <Route path="/checkin-success" element={<ProtectedRoute><CheckInSuccess /></ProtectedRoute>} />
+        <Route path="/pulse/:id" element={<ProtectedRoute><RelationshipPulse /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )

@@ -52,6 +52,8 @@ function getDaysAgo(lastContactDate: string | null): string {
 function Contacts() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [loading, setLoading] = useState(true)
+  const [inviteContact, setInviteContact] = useState<Contact | null>(null)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -67,6 +69,23 @@ function Contacts() {
     }
     fetchContacts()
   }, [])
+
+  const handleInvite = (contact: Contact) => {
+    setCopied(false)
+    setInviteContact(contact)
+  }
+
+  const handleCopyLink = async () => {
+    if (!inviteContact) return
+    const link = `${window.location.origin}/checkin/${inviteContact.id}`
+    await navigator.clipboard.writeText(link)
+    setCopied(true)
+  }
+
+  const closeModal = () => {
+    setInviteContact(null)
+    setCopied(false)
+  }
 
   return (
     <div className="min-h-screen bg-secondary">
@@ -142,12 +161,58 @@ function Contacts() {
                     {contact.email && <p>✉️ {contact.email}</p>}
                     {contact.phone && <p>📞 {contact.phone}</p>}
                   </div>
+
+                  <div className="mt-4 flex gap-2">
+                    <button
+                      onClick={() => handleInvite(contact)}
+                      className="flex-1 text-sm text-primary border border-primary px-3 py-2 rounded-lg font-medium hover:bg-primary hover:text-white transition-colors"
+                    >
+                      📨 Inviter
+                    </button>
+                    <Link
+                      to={`/pulse/${contact.id}`}
+                      className="flex-1 text-sm text-center text-white bg-primary px-3 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors"
+                    >
+                      💓 Pulse
+                    </Link>
+                  </div>
                 </div>
               )
             })}
           </div>
         )}
       </main>
+
+      {/* MODAL INVITE */}
+      {inviteContact && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
+            <h2 className="text-lg font-bold text-primary">
+              Inviter {inviteContact.name}
+            </h2>
+            <p className="mt-2 text-sm text-gray-600">
+              Envoyez ce lien à {inviteContact.name} pour un check-in :
+            </p>
+            <div className="mt-4 bg-gray-100 rounded-lg px-4 py-3 text-sm text-gray-700 break-all">
+              {window.location.origin}/checkin/{inviteContact.id}
+            </div>
+            <div className="mt-4 flex gap-3">
+              <button
+                onClick={handleCopyLink}
+                className="flex-1 bg-primary text-white py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
+              >
+                {copied ? '✅ Lien copié !' : '📋 Copier le lien'}
+              </button>
+              <button
+                onClick={closeModal}
+                className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
