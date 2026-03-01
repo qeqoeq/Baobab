@@ -1,28 +1,60 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Landing from './pages/Landing'
-import Signup from './pages/Signup'
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import AddContact from './pages/AddContact'
-import Contacts from './pages/Contacts'
-import CheckIn from './pages/CheckIn'
-import CheckInSuccess from './pages/CheckInSuccess'
-import RelationshipPulse from './pages/RelationshipPulse'
+import Constellation from './pages/Constellation'
+import Onboarding from './pages/Onboarding'
+import Relations from './pages/Relations'
+import Evaluate from './pages/Evaluate'
+import ContactProfile from './pages/ContactProfile'
+import Profile from './pages/Profile'
 import ProtectedRoute from './components/ProtectedRoute'
+import BottomNav from './components/layout/BottomNav'
+import ToastHost from './components/ui/ToastHost'
+
+function ProtectedLayout() {
+  const location = useLocation()
+  const hideBottomNav =
+    location.pathname === '/onboarding' ||
+    location.pathname.startsWith('/evaluate/')
+
+  return (
+    <div className="min-h-screen pb-20">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
+        >
+          <Outlet />
+        </motion.div>
+      </AnimatePresence>
+      {!hideBottomNav && <BottomNav />}
+      <ToastHost />
+    </div>
+  )
+}
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/add-contact" element={<ProtectedRoute><AddContact /></ProtectedRoute>} />
-        <Route path="/contacts" element={<ProtectedRoute><Contacts /></ProtectedRoute>} />
-        <Route path="/checkin/:id" element={<ProtectedRoute><CheckIn /></ProtectedRoute>} />
-        <Route path="/checkin-success" element={<ProtectedRoute><CheckInSuccess /></ProtectedRoute>} />
-        <Route path="/pulse/:id" element={<ProtectedRoute><RelationshipPulse /></ProtectedRoute>} />
+        <Route
+          element={
+            <ProtectedRoute>
+              <ProtectedLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/" element={<Constellation />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/relations" element={<Relations />} />
+          <Route path="/evaluate/:contactId" element={<Evaluate />} />
+          <Route path="/contact/:contactId" element={<ContactProfile />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 function Login() {
-  const navigate = useNavigate()
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -14,13 +13,19 @@ function Login() {
     setError(null)
     setLoading(true)
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/dashboard`,
+      },
+    })
 
     if (error) {
       setError(error.message)
       setLoading(false)
     } else {
-      navigate('/dashboard')
+      setSuccess(true)
+      setLoading(false)
     }
   }
 
@@ -32,6 +37,15 @@ function Login() {
           <h1 className="mt-2 text-2xl font-bold text-primary">Connexion</h1>
         </div>
 
+        {success ? (
+          <div className="text-center py-4">
+            <span className="text-4xl">✉️</span>
+            <p className="mt-4 text-lg font-semibold text-primary">Lien envoyé</p>
+            <p className="mt-2 text-sm text-gray-600">
+              Ouvre l'email envoyé à <strong>{email}</strong> pour te connecter.
+            </p>
+          </div>
+        ) : (
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
@@ -54,29 +68,15 @@ function Login() {
             />
           </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Mot de passe
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Votre mot de passe"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-            />
-          </div>
-
           <button
             type="submit"
             disabled={loading}
             className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Connexion...' : 'Se connecter'}
+            {loading ? 'Envoi...' : 'Recevoir un magic link'}
           </button>
         </form>
+        )}
 
         <div className="mt-6 text-center text-sm space-y-2">
           <p className="text-gray-600">
@@ -84,11 +84,6 @@ function Login() {
             <Link to="/signup" className="text-primary font-semibold hover:underline">
               Inscription
             </Link>
-          </p>
-          <p>
-            <a href="#" className="text-gray-500 hover:text-primary hover:underline transition-colors">
-              Mot de passe oublié ?
-            </a>
           </p>
         </div>
       </div>

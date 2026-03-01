@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --baobab-green-dark: #1B5E20;
+  --baobab-green: #4CAF50;
+  --baobab-bg: #F5F5F5;
+  --baobab-bg-soft: #FAFAFA;
+  --baobab-text: #212121;
+  --baobab-text-secondary: #616161;
+  --baobab-text-tertiary: #9E9E9E;
+  --baobab-error: #D32F2F;
+  --baobab-accent: #FF6F00;
+}
+
+html, body, #root {
+  background: var(--baobab-bg-soft);
+  color: var(--baobab-text);
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-sheet-up {
+  animation: sheet-up 220ms ease-out both;
+}
+
+@keyframes route-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-route-fade {
+  animation: route-fade-in 200ms ease-out both;
+}
