@@ -46,7 +46,7 @@ function AddContact() {
     <div className="min-h-screen flex items-center justify-center bg-secondary px-4 py-12">
       <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
         <Link
-          to="/dashboard"
+          to="/"
           className="text-sm text-gray-500 hover:text-primary transition-colors"
         >
           ← Retour au tableau de bord

@@ -16,7 +16,7 @@ function Signup() {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: 'https://baobab-app-t8bq-fnz6i4xzx-ghr6fpwbxm-1770s-projects.vercel.app/',
       },
     })
 

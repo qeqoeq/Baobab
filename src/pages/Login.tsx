@@ -15,7 +15,7 @@ function Login() {
 
     const otpOptions = {
       redirectTo:
-        'https://baobab-app-t8bq-fnz6i4xzx-ghr6fpwbxm-1770s-projects.vercel.app',
+        'https://baobab-app-t8bq-fnz6i4xzx-ghr6fpwbxm-1770s-projects.vercel.app/',
     } as unknown as { emailRedirectTo?: string }
 
     const { error } = await supabase.auth.signInWithOtp({
